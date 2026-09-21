@@ -22,8 +22,11 @@ class Browser:
         ensure_daemon()
         self.target = cdp("Target.createTarget", url="about:blank", background=True)["targetId"]
         self.session = cdp("Target.attachToTarget", targetId=self.target, flatten=True)["sessionId"]
+        # Chrome throttles a background tab to ~2 rAF/s even with focus emulation, so menus
+        # animating in (opacity/transform transitions) stay invisible to the observer.
+        # Activate the owned tab so it renders at full rate.
+        cdp("Target.activateTarget", targetId=self.target)
         self.call("Emulation.setDeviceMetricsOverride", width=1120, height=780, deviceScaleFactor=1, mobile=False)
-        # Keep rAF/menus rendering in an owned background tab, without activating the user's Chrome tab.
         self.call("Emulation.setFocusEmulationEnabled", enabled=True)
         self.call("Page.navigate", url=url)
         deadline = time.monotonic() + 15

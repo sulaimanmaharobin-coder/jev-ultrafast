@@ -74,8 +74,9 @@ from jev_ultrafast import Agent
 
 with Agent(
     "https://www.google.com/travel/flights?hl=en",
-    "Find one-way flights from Zurich to London on September 20, 2026, "
-    "for one adult in economy. Stop when matching flight options are visible.",
+    "Find round-trip flights from Senai International Airport (JHB) in Johor Bahru "
+    "to Kota Kinabalu (BKI) in Sabah, departing October 16, 2026 and returning "
+    "October 21, 2026, for one adult in economy. Stop when matching flight options are visible.",
 ) as agent:
     for state in agent.run():
         print(state["elapsed_ms"], state["status"])
